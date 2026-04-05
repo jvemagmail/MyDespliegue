@@ -36,7 +36,7 @@ def predict():
     missing = [name for name, val in [('CPV_Descripcion', nCPV), ('Duracion_total', ndur), ('Adjudicatari', nAdj), ('Procediment_dadjudicacio', nproc), ('Tipus_de_contracte', ntipo) ] if np.isnan(val)]
 
     input_data = pd.DataFrame({'CPV_Descripcion': [nCPV], 'Duracion_total': [ndur], 'Adjudicatari': [nAdj],'Procediment_dadjudicacio': [nproc], 'Tipus_de_contracte': [ntipo] })
-    return input_data
+    return input_data[0:0]
     #prediction = model.predict(input_data)
 
     #response = {'predictions': prediction[0]}
