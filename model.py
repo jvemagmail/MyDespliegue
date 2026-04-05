@@ -64,7 +64,7 @@ drop_cols = [col for col in X_train.columns if col not in no_drop]
 X_train.drop(drop_cols, axis=1, inplace=True)
 pipeline_steps.append(lambda df, drop_cols=drop_cols: df.drop(drop_cols, axis=1))
 
-print(X_train.columns)
+print(X_train.info())
 
 study = optuna.create_study(direction="maximize", sampler=optuna.samplers.TPESampler(seed=42))
 study.optimize(lambda trial: objective(trial, X_train, y_train), n_trials=10)
@@ -104,3 +104,4 @@ with open('model.pkl', 'wb') as f:
 # # Aplicamos las modificaciones que hemos hecho sobre X_train a X_test
 # X_test = reduce(lambda acc, func: func(acc), pipeline_steps, X_test)
 # predecir(best_rf_model, X_test, y_test)
+#https://mydespliegue.onrender.com/api/v1/predict?Proc=True&Tipo=0&Adj=0&CPV=0&Dur=0

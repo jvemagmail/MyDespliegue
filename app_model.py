@@ -35,11 +35,11 @@ def predict():
     
     #missing = [name for name, val in [('CPV_Descripcion', nCPV), ('Duracion_total', ndur), ('Adjudicatari', nAdj), ('Procediment_dadjudicacio', nproc), ('Tipus_de_contracte', ntipo) ] if np.isnan(val)]
 
-    input_data = pd.DataFrame({'CPV_Descripcion': [nCPV], 'Duracion_total': [ndur], 'Adjudicatari': [nAdj],'Procediment_dadjudicacio': [nproc], 'Tipus_de_contracte': [ntipo] })
-    return jsonify(input_data.to_dict(orient="records"))
-    #prediction = model.predict(input_data)
+    input_data = pd.DataFrame({'Procediment_dadjudicacio': [nproc], 'Tipus_de_contracte': [ntipo], 'Adjudicatari': [nAdj], 'CPV_Descripcion': [nCPV], 'Duracion_total': [ndur], })
+    #return jsonify(input_data.to_dict(orient="records"))
+    prediction = model.predict(input_data)
 
-    #response = {'predictions': prediction[0]}
+    response = {'predictions': prediction[0]}
     
     
     
@@ -48,7 +48,7 @@ def predict():
     
     
 
-    #return jsonify(response)
+    return jsonify(response)
     
 
 
