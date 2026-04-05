@@ -28,16 +28,15 @@ def predict():
 # ['Procediment_dadjudicacio', 'Tipus_de_contracte', 'Adjudicatari', 'CPV_Descripcion', 'Duracion_total']
   
     nproc = request.args.get('Proc', np.nan, type=bool)
-    # ntipo = request.args.get('Tipo', np.nan, type=float)
-    # nAdj = request.args.get('Adj', np.nan, type=float)
-    # nCPV = request.args.get('CPV', np.nan, type=float)
-    # ndur = request.args.get('Dur', np.nan, type=float)
+    ntipo = request.args.get('Tipo', np.nan, type=float)
+    nAdj = request.args.get('Adj', np.nan, type=float)
+    nCPV = request.args.get('CPV', np.nan, type=float)
+    ndur = request.args.get('Dur', np.nan, type=float)
     
-    return nproc
-    # missing = [name for name, val in [('CPV_Descripcion', nCPV), ('Duracion_total', ndur), ('Adjudicatari', nAdj), ('Procediment_dadjudicacio', nproc), ('Tipus_de_contracte', ntipo) ] if np.isnan(val)]
+    #missing = [name for name, val in [('CPV_Descripcion', nCPV), ('Duracion_total', ndur), ('Adjudicatari', nAdj), ('Procediment_dadjudicacio', nproc), ('Tipus_de_contracte', ntipo) ] if np.isnan(val)]
 
-    # input_data = pd.DataFrame({'CPV_Descripcion': [nCPV], 'Duracion_total': [ndur], 'Adjudicatari': [nAdj],'Procediment_dadjudicacio': [nproc], 'Tipus_de_contracte': [ntipo] })
-    # return input_data[0:0]
+    input_data = pd.DataFrame({'CPV_Descripcion': [nCPV], 'Duracion_total': [ndur], 'Adjudicatari': [nAdj],'Procediment_dadjudicacio': [nproc], 'Tipus_de_contracte': [ntipo] })
+    return jsonify(input_data.to_dict(orient="records"))
     #prediction = model.predict(input_data)
 
     #response = {'predictions': prediction[0]}
