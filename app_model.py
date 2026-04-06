@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
+from utils.toolbox import *
 
 os.chdir(os.path.dirname(__file__))
 
@@ -18,7 +19,7 @@ with open('model.pkl', 'rb') as f:
 
 @app.route("/", methods=["GET"])
 def hello():
-    return "Bienvenido a mi API del modelo de predicción de importe de adjudicación de licitaciones públicas de cataluña"
+    return welcome_message()
 
 
 @app.route("/api/v1/predict", methods=["GET"])
