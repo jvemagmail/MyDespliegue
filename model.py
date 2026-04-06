@@ -101,6 +101,9 @@ best_rf_model.fit(X,y)
 with open('model.pkl', 'wb') as f:
     pickle.dump(best_rf_model, f)
 
+X_train.to_csv('X_train.csv', index=False)
+y_train.to_csv('y_train.csv', index=False)
+
 # # Aplicamos las modificaciones que hemos hecho sobre X_train a X_test
 # X_test = reduce(lambda acc, func: func(acc), pipeline_steps, X_test)
 # predecir(best_rf_model, X_test, y_test)
