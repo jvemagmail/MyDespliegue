@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
-from utils.toolbox import *
+from utils.toolboxapp import *
 
 os.chdir(os.path.dirname(__file__))
 
