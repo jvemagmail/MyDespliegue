@@ -51,7 +51,25 @@ def predict():
 
     return jsonify(response)
     
+@app.route("/api/v2/predict", methods=["POST"])
+def predict_v2():
+    data = request.get_json(force=True)
+    nproc = data.get('Proc', np.nan)
+    ntipo = data.get('Tipo', np.nan)
+    nAdj = data.get('Adj', np.nan)
+    nCPV = data.get('CPV', np.nan)
+    ndur = data.get('Dur', np.nan)
 
+    input_data = pd.DataFrame({
+        'Procediment_dadjudicacio': [nproc],
+        'Tipus_de_contracte': [ntipo],
+        'Adjudicatari': [nAdj],
+        'CPV_Descripcion': [nCPV],
+        'Duracion_total': [ndur],
+    })
+    prediction = model.predict(input_data)
+    response = {'predictions': prediction[0]}
+    return jsonify(response)
 
 @app.route("/api/v1/retrain", methods=["GET"])
 def retrain():
