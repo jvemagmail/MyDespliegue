@@ -1,4 +1,6 @@
-from flask import Flask, jsonify, request
+import csv
+
+from flask import Flask, jsonify, request, render_template_string
 import os
 import joblib
 import pickle
@@ -58,6 +60,37 @@ def predict_v2():
 
     return jsonify(response)
 
+@app.route("/Codigos_CPV", methods=["GET"])
+def view_csv():
+    """Render CSV as an HTML table."""
+    try:
+        with open("data/Codigos_CPV.csv", newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            rows = list(reader)
+
+        # Simple HTML table rendering
+        html = """
+        <html>
+        <head><title>CSV Viewer</title></head>
+        <body>
+        <h2>CSV Data</h2>
+        <table border="1" cellpadding="5">
+        {% for row in rows %}
+            <tr>
+            {% for col in row %}
+                <td>{{ col }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
+        </body>
+        </html>
+        """
+        return render_template_string(html, rows=rows)
+    
+    except FileNotFoundError:
+        return "CSV file not found.", 404
+    
 @app.route("/api/v1/retrain", methods=["GET"])
 def retrain():
     global model

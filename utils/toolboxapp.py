@@ -23,7 +23,9 @@ def welcome_message():
 
                 <h2>Posibles valores para las variables:</h2>
                 <ul>
-                    <li><strong>Código CPV</strong> &rarr; <a href=\"Codigos_CPV.csv\" target=\"_blank\">Ver fichero de códigos CPV</a></li>
+                    <li><strong>Código CPV</strong> &rarr; 
+                        <a href=\"https://mydespliegue.onrender.com/Codigos_CPV\" target=\"_blank\">
+                        https://mydespliegue.onrender.com/Codigos_CPV</a></li>
                     <li><strong>Tipo de contrato:</strong>
                         <ul>
                             <li>1: Servicios</li>
@@ -41,8 +43,15 @@ def welcome_message():
                     <li>Para realizar una predicción, pulse el siguiente enlace:</li>
                     <a href=\"https://mydespliegue.onrender.com/api/v1/predict\" target=\"_blank\">
                         https://mydespliegue.onrender.com/api/v1/predict
+
+                        <p>y añada los parámetros en la URL, por ejemplo:
+                        <pre>
+                        https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12
+                        </pre>
+                        </p>
+
                     </a>              
-                
+                    
                     <li>Para probar la predicción con Postman, puedes usar la siguiente configuración:</li>
                     <p> <strong>POST</strong> a <code>https://mydespliegue.onrender.com/api/v2/predict</code> <br>
                     Body (JSON):
