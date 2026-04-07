@@ -2,10 +2,11 @@ from flask import Flask, jsonify, request
 import os
 import joblib
 import pickle
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
-import numpy as np
+
 from utils.toolboxapp import *
 
 os.chdir(os.path.dirname(__file__))
@@ -22,53 +23,39 @@ def hello():
     return welcome_message()
 
 
-@app.route("/api/v1/predict", methods=["GET"])
+@app.route("/api/v1/predict", methods=["POST"])
 def predict():
   
-# Columnas del fichero usado para entrenar el modelo: 
-# ['Procediment_dadjudicacio', 'Tipus_de_contracte', 'Adjudicatari', 'CPV_Descripcion', 'Duracion_total']
-  
-    nproc = request.args.get('Proc', np.nan, type=bool)
-    ntipo = request.args.get('Tipo', np.nan, type=float)
-    nAdj = request.args.get('Adj', np.nan, type=float)
-    nCPV = request.args.get('CPV', np.nan, type=float)
-    ndur = request.args.get('Dur', np.nan, type=float)
+#   Columnas del fichero usado para entrenar el modelo: 
+#   Tipus_de_contracte | CPV_def | Duracion_total
     
-    #missing = [name for name, val in [('CPV_Descripcion', nCPV), ('Duracion_total', ndur), ('Adjudicatari', nAdj), ('Procediment_dadjudicacio', nproc), ('Tipus_de_contracte', ntipo) ] if np.isnan(val)]
+#   Recibimos los parámetros de la petición POST    
+    valores = {}
 
-    input_data = pd.DataFrame({'Procediment_dadjudicacio': [nproc], 'Tipus_de_contracte': [ntipo], 'Adjudicatari': [nAdj], 'CPV_Descripcion': [nCPV], 'Duracion_total': [ndur], })
-    #return jsonify(input_data.to_dict(orient="records"))
-    prediction = model.predict(input_data)
-
-    response = {'predictions': prediction[0]}
+    valores['Tipus_de_contracte'] = request.args.get('Tipo', np.nan, type=float)
+    valores['CPV_def'] = request.args.get('CPV', np.nan, type=float)
+    valores['Duracion_total'] = request.args.get('Dur', np.nan, type=float)
     
-    
-    
-    #if missing:
-    #    response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
-    
-    
+    response = prediccion(model, valores)
 
     return jsonify(response)
     
 @app.route("/api/v2/predict", methods=["POST"])
 def predict_v2():
-    data = request.get_json(force=True)
-    nproc = data.get('Proc', np.nan)
-    ntipo = data.get('Tipo', np.nan)
-    nAdj = data.get('Adj', np.nan)
-    nCPV = data.get('CPV', np.nan)
-    ndur = data.get('Dur', np.nan)
 
-    input_data = pd.DataFrame({
-        'Procediment_dadjudicacio': [nproc],
-        'Tipus_de_contracte': [ntipo],
-        'Adjudicatari': [nAdj],
-        'CPV_Descripcion': [nCPV],
-        'Duracion_total': [ndur],
-    })
-    prediction = model.predict(input_data)
-    response = {'predictions': prediction[0]}
+#   Columnas del fichero usado para entrenar el modelo: 
+#   Tipus_de_contracte | CPV_def | Duracion_total
+    
+#   Recibimos los parámetros de la petición POST
+    data = request.get_json(force=True)
+
+    valores = {}
+    valores['Tipus_de_contracte'] = data.get('Tipo', np.nan)
+    valores['CPV_def'] = data.get('CPV', np.nan)
+    valores['Duracion_total'] = data.get('Dur', np.nan)
+
+    response = prediccion(model, valores)
+
     return jsonify(response)
 
 @app.route("/api/v1/retrain", methods=["GET"])

@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 def welcome_message():
 
     return """
@@ -14,7 +17,7 @@ def welcome_message():
             </p>
             <ul>
                 <li>El modelo utiliza un Random Forest optimizado mediante <em>Optuna</em> para ofrecer la mejor precisión posible.</li>
-                <li>Las variables más importantes para la predicción son: <strong>CPV_Descripcion, Duracion_total, Adjudicatari, Procediment_dadjudicacio</strong> y <strong>Tipus_de_contracte</strong>.</li>
+                <li>Las variables más importantes para la predicción son: <strong>Código CPV, Duración total, Tipo de contrato</strong>.</li>
                 <li>El modelo ha sido entrenado y validado con datos reales de licitaciones.</li>
             </ul>
             <p>
@@ -30,15 +33,13 @@ def welcome_message():
                 Body (JSON):
                 <pre>
             {
-            "Proc": true,
             "Tipo": 1,
-            "Adj": 0,
-            "CPV": 123,
+            "CPV": 33696500,
             "Dur": 12
             }
                 </pre>
                 O copia este comando <code>curl</code> y pégalo en tu terminal:
-                <button onclick="navigator.clipboard.writeText('curl -X POST \"https://mydespliegue.onrender.com/api/v2/predict\" -H \"Content-Type: application/json\" -d \"{\\\"Proc\\\":true,\\\"Tipo\\\":1,\\\"Adj\\\":0,\\\"CPV\\\":123,\\\"Dur\\\":12}\"')">Copiar comando curl</button>
+                <button onclick="navigator.clipboard.writeText('curl -X POST \"https://mydespliegue.onrender.com/api/v2/predict\" -H \"Content-Type: application/json\" -d \"{\\\"Tipo\\\":1,\\\"CPV\\\":33696500,\\\"Dur\\\":12}\"')">Copiar comando curl</button>
             </p>
             <p>
                 <a href="https://learning.postman.com/docs/getting-started/introduction/" target="_blank">¿Cómo usar Postman?</a>
@@ -46,3 +47,24 @@ def welcome_message():
         </body>
         </html>
     """
+
+def prediccion(model, valores):
+
+    response = {}
+
+#   Aplicamos logaritmo a las variables numéricas para que el modelo pueda hacer la predicción correctamente
+    valores = {key: np.log1p(val) for key, val in valores.items()}
+
+    missing = [name for name, val in valores.items() if np.isnan(val)]
+
+    input_data = pd.DataFrame(valores, index=[0])
+    
+    prediction = model.predict(input_data)
+
+    response['Parámetros de entrada'] = valores
+    response['Predicción'] = prediction[0]
+
+    if missing:
+        response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
+
+    return response

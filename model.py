@@ -58,14 +58,13 @@ pipeline_steps = []
 X_train, pipeline_steps = pipeline_model(X_train)
 
 '''Eliminamos las features con poca colinearidad con el target para hacer el despliegue con un número reducido de features'''
-no_drop = ['CPV_Descripcion', 'Duracion_total', 'Adjudicatari', 'Procediment_dadjudicacio', 'Tipus_de_contracte']
+no_drop = ['CPV_def', 'Duracion_total', 'Tipus_de_contracte']
 drop_cols = [col for col in X_train.columns if col not in no_drop]
 
 X_train.drop(drop_cols, axis=1, inplace=True)
 pipeline_steps.append(lambda df, drop_cols=drop_cols: df.drop(drop_cols, axis=1))
 
-print(X_train.info())
-
+# Preparamos el modelo para el despliegue con las features seleccionadas
 study = optuna.create_study(direction="maximize", sampler=optuna.samplers.TPESampler(seed=42))
 study.optimize(lambda trial: objective(trial, X_train, y_train), n_trials=10)
 
@@ -101,8 +100,8 @@ best_rf_model.fit(X,y)
 with open('model.pkl', 'wb') as f:
     pickle.dump(best_rf_model, f)
 
-X_train.to_csv('X_train.csv', index=False)
-y_train.to_csv('y_train.csv', index=False)
+# X_train.to_csv('X_train.csv', index=False)
+# y_train.to_csv('y_train.csv', index=False)
 
 # # Aplicamos las modificaciones que hemos hecho sobre X_train a X_test
 # X_test = reduce(lambda acc, func: func(acc), pipeline_steps, X_test)

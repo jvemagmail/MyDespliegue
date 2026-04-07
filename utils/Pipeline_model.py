@@ -68,12 +68,22 @@ def pipeline_model(X_train):
         X_train = codi_cpv(X_train, df_CPV)
         pipeline_steps.append(lambda df: codi_cpv(df, df_CPV))
 
-        X_train.drop(columns=['Codi_CPV', 'CPV_def'], inplace=True)
-        pipeline_steps.append(lambda df, col=['Codi_CPV', 'CPV_def']: df.drop(col, axis=1))
+        X_train.drop(columns=['Codi_CPV', "CPV_Descripcion"], inplace=True)
+        pipeline_steps.append(lambda df, col=['Codi_CPV', "CPV_Descripcion"]: df.drop(col, axis=1))
 
-        freq_CPV = X_train["CPV_Descripcion"].value_counts(normalize=True)
-        X_train["CPV_Descripcion"] = X_train['CPV_Descripcion'].map(freq_CPV)
-        pipeline_steps.append(lambda df: df.assign(CPV_Descripcion=df['CPV_Descripcion'].map(freq_CPV)))
+        X_train['CPV_def'] = X_train['CPV_def'].astype(int)
+        pipeline_steps.append(lambda df: df.assign(CPV_def=df['CPV_def'].astype(int)))
+
+        # freq_CPV = X_train['CPV_def'].value_counts(normalize=True)
+        # X_train['CPV_def'] = X_train['CPV_def'].map(freq_CPV)
+        # pipeline_steps.append(lambda df: df.assign(CPV_def=df['CPV_def'].map(freq_CPV)))
+
+        # X_train.drop(columns=['Codi_CPV', 'CPV_def'], inplace=True)
+        # pipeline_steps.append(lambda df, col=['Codi_CPV', 'CPV_def']: df.drop(col, axis=1))
+
+        # freq_CPV = X_train["CPV_Descripcion"].value_counts(normalize=True)
+        # X_train["CPV_Descripcion"] = X_train['CPV_Descripcion'].map(freq_CPV)
+        # pipeline_steps.append(lambda df: df.assign(CPV_Descripcion=df['CPV_Descripcion'].map(freq_CPV)))
 
     
     if "Tipo_de_contrato" in X_train.columns:
@@ -104,15 +114,13 @@ def pipeline_model(X_train):
     duracion(X_train)
     pipeline_steps.append(lambda df: duracion(df))
 
-
     if "Tipus_de_liquidacio" in X_train.columns:
         X_train["Tipus_de_liquidacio"] = np.where(X_train["Tipus_de_liquidacio"] =="compliment", True, False)
         pipeline_steps.append(lambda df: df.assign(Tipus_de_liquidacio=np.where(df["Tipus_de_liquidacio"] == "compliment", True, False)))
 
     # Separar columnas numéricas, objeto y fecha
     features_numericas = X_train.select_dtypes(include=['number']).columns
-    features_booleanas = X_train.select_dtypes(include=['bool']).columns
-
+   
     X_train[features_numericas] = np.log1p(X_train[features_numericas])
     pipeline_steps.append(lambda df: df.assign(**{col: np.log1p(df[col]) for col in features_numericas}))
 
