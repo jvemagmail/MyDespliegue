@@ -23,13 +23,13 @@ def hello():
     return welcome_message()
 
 
-@app.route("/api/v1/predict", methods=["POST"])
+@app.route("/api/v1/predict", methods=["GET"])
 def predict():
   
 #   Columnas del fichero usado para entrenar el modelo: 
 #   Tipus_de_contracte | CPV_def | Duracion_total
     
-#   Recibimos los parámetros de la petición POST    
+#   Recibimos los parámetros de la petición GET    
     valores = {}
 
     valores['Tipus_de_contracte'] = request.args.get('Tipo', np.nan, type=float)
