@@ -23,7 +23,7 @@ def welcome_message():
 
                 <h2>Posibles valores para las variables:</h2>
                 <ul>
-                    <li><strong>Código CPV</strong> &rarr; <a href=\"data/CPV.csv\" target=\"_blank\">Ver fichero de códigos CPV</a></li>
+                    <li><strong>Código CPV</strong> &rarr; <a href=\"Codigos_CPV.csv\" target=\"_blank\">Ver fichero de códigos CPV</a></li>
                     <li><strong>Tipo de contrato:</strong>
                         <ul>
                             <li>1: Servicios</li>
@@ -36,30 +36,30 @@ def welcome_message():
                     </li>
                 </ul>
 
-                <p>
-                    Para realizar una predicción, pulse el siguiente enlace:<br>
+                <h2>Predicciones:</h2>
+                <ul>
+                    <li>Para realizar una predicción, pulse el siguiente enlace:</li>
                     <a href=\"https://mydespliegue.onrender.com/api/v1/predict\" target=\"_blank\">
                         https://mydespliegue.onrender.com/api/v1/predict
-                    </a>
-                </p>
-
-                <p>
-                    Para probar la predicción con Postman, puedes usar la siguiente configuración:<br>
-                    <strong>POST</strong> a <code>https://mydespliegue.onrender.com/api/v2/predict</code> <br>
+                    </a>              
+                
+                    <li>Para probar la predicción con Postman, puedes usar la siguiente configuración:</li>
+                    <p> <strong>POST</strong> a <code>https://mydespliegue.onrender.com/api/v2/predict</code> <br>
                     Body (JSON):
                     <pre>
-                {
-                "Tipo": 1,
-                "CPV": 33696500,
-                "Dur": 12
-                }
-                    </pre>
-                    O copia este comando <code>curl</code> y pégalo en tu terminal:
-                    <button onclick=\"navigator.clipboard.writeText('curl -X POST \\\"https://mydespliegue.onrender.com/api/v2/predict\\\" -H \\\"Content-Type: application/json\\\" -d \\\"{\\\"Tipo\\\":1,\\\"CPV\\\":33696500,\\\"Dur\\\":12}\\\"')\">Copiar comando curl</button>
-                </p>
-                <p>
-                    <a href=\"https://learning.postman.com/docs/getting-started/introduction/\" target=\"_blank\">¿Cómo usar Postman?</a>
-                </p>
+                    {
+                    "Tipo": 1,
+                    "CPV": 33696500,
+                    "Dur": 12
+                    }
+                        </pre>
+                        O copia este comando <code>curl</code> y pégalo en tu terminal:
+                        <button onclick=\"navigator.clipboard.writeText('curl -X POST \\\"https://mydespliegue.onrender.com/api/v2/predict\\\" -H \\\"Content-Type: application/json\\\" -d \\\"{\\\"Tipo\\\":1,\\\"CPV\\\":33696500,\\\"Dur\\\":12}\\\"')\">Copiar comando curl</button>
+                    </p>
+                    <p>
+                        <a href=\"https://learning.postman.com/docs/getting-started/introduction/\" target=\"_blank\">¿Cómo usar Postman?</a>
+                    </p>
+                </ul>
             </body>
             </html>
         """
