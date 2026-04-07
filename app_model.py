@@ -63,9 +63,10 @@ def predict_v2():
 @app.route("/Codigos_CPV", methods=["GET"])
 def view_csv():
     """Render CSV as an HTML table."""
+
     try:
         with open("data/Codigos_CPV.csv", newline='', encoding='utf-8') as f:
-            reader = csv.reader(f)
+            reader = csv.reader(f, delimiter=';')
             rows = list(reader)
 
         # Simple HTML table rendering

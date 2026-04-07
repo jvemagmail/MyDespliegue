@@ -42,15 +42,15 @@ def welcome_message():
                 <ul>
                     <li>Para realizar una predicción, pulse el siguiente enlace:</li>
                     <a href=\"https://mydespliegue.onrender.com/api/v1/predict\" target=\"_blank\">
-                        https://mydespliegue.onrender.com/api/v1/predict
+                        https://mydespliegue.onrender.com/api/v1/predict </a> 
 
-                        <p>y añada los parámetros en la URL, por ejemplo:
-                        <pre>
-                        https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12
-                        </pre>
+                        <p>
+                        Añada los parámetros en la URL, por ejemplo:
+                        <a href=\"https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12\" target=\"_blank\">
+                        https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12</a>
                         </p>
 
-                    </a>              
+                                
                     
                     <li>Para probar la predicción con Postman, puedes usar la siguiente configuración:</li>
                     <p> <strong>POST</strong> a <code>https://mydespliegue.onrender.com/api/v2/predict</code> <br>
