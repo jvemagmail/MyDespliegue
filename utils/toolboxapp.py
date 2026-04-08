@@ -35,6 +35,7 @@ def welcome_message():
                             <li>5: Gestión de servicio público</li>
                             <li>6: Concesión de servicios</li>
                         </ul>
+                    <li><strong>Duracion del contrato:</strong> Està expresado en dias
                     </li>
                 </ul>
 
