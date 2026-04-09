@@ -45,6 +45,9 @@ def welcome_message():
                     <a href=\"https://mydespliegue.onrender.com/api/v1/predict\" target=\"_blank\">
                         https://mydespliegue.onrender.com/api/v1/predict </a> 
 
+                    <a href=\"https://mydespliegue.onrender.com/form_predict\" target=\"_blank\">
+                        https://mydespliegue.onrender.com/form_predict </a> 
+
                         <p>
                         Añada los parámetros en la URL, por ejemplo:
                         <a href=\"https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12\" target=\"_blank\">

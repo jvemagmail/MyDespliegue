@@ -6,6 +6,8 @@ import joblib
 import pickle
 import numpy as np
 import pandas as pd
+import streamlit as st
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 
@@ -14,6 +16,46 @@ from utils.toolboxapp import *
 os.chdir(os.path.dirname(__file__))
 
 app = Flask(__name__)
+
+# Nuevo endpoint para formulario de predicción
+@app.route("/form_predict", methods=["GET", "POST"])
+def form_predict():
+    options = [
+        "1: Servicios",
+        "2: Suministros",
+        "3: Obras",
+        "4: Privado de administración pública",
+        "5: Gestión de servicio público",
+        "6: Concesión de servicios"
+    ]
+    if request.method == "POST":
+        valores = {}
+        valores['Tipus_de_contracte'] = request.form.get('Tipus_de_contracte')
+        valores['Duracion_total'] = float(request.form.get('Duracion_total', 0))
+        valores['CPV_def'] = request.form.get('CPV_def')
+        # Llama a la función de predicción (ajusta según tu función real)
+        resultado = prediccion(model, valores)
+        return render_template_string('''
+            <h2>Resultado de la predicción</h2>
+            <p>{{ resultado }}</p>
+            <a href="/form_predict">Volver</a>
+        ''', resultado=resultado)
+    return render_template_string('''
+        <h2>Formulario de Predicción</h2>
+        <form method="post">
+            <label for="Tipus_de_contracte">Tipo de contrato:</label>
+            <select name="Tipus_de_contracte" required>
+                {% for opt in options %}
+                <option value="{{ opt }}">{{ opt }}</option>
+                {% endfor %}
+            </select><br><br>
+            <label for="Duracion_total">Duración del contrato:</label>
+            <input type="number" step="0.1" min="0" max="1095" name="Duracion_total" required><br><br>
+            <label for="CPV_def">Código CPV (8 dígitos):</label>
+            <input type="text" name="CPV_def" pattern="\\d{8}" required><br><br>
+            <input type="submit" value="Predecir">
+        </form>
+    ''', options=options)
 
 # Carga el modelo
 with open('model.pkl', 'rb') as f:
