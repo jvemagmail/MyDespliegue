@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import streamlit as st
 
 def welcome_message():
 
@@ -86,8 +87,20 @@ def prediccion(model, valores):
     
     prediction = model.predict(input_data)
 
-    response['Parámetros de entrada'] = valores
-    response['Predicción'] = np.expm1(prediction[0])
+    val1 = st.radio("Tipo de contrato",["1: Servicios","2: Suministros","3: Obras","4: Privado de administración pública","5: Gestión de servicio público","6: Concesión de servicios"],index = None,)
+    st.write("Has seleccionado:", val1)
+
+    val2 = st.slider("Duracion del contrato", min_value = 0.0, max_value = 1095.0, step = 0.1)
+
+    val3 = st.text_input("Código CPV (deben ser 8 digitos)", "03451300")
+    st.write("El codigo actual és:", val3)
+
+    if st.button("Predict"):
+        prediction = str(model.predict([[val1, val2, val3]])[0])
+        st.write("Predicción:", prediction)
+
+    # response['Parámetros de entrada'] = valores
+    # response['Predicción'] = np.expm1(prediction[0])
 
     if missing:
         response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
