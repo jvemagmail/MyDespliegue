@@ -17,8 +17,16 @@ os.chdir(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
-# Nuevo endpoint para formulario de predicción
-@app.route("/form_predict", methods=["GET", "POST"])
+# Carga el modelo
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
+
+@app.route("/", methods=["GET"])
+def hello():
+    return welcome_message()
+
+# Endpoint para el formulario de predicción
+@app.route("/api/v1/predict", methods=["GET", "POST"])
 def form_predict():
     options = [
         "1: Servicios",
@@ -45,7 +53,7 @@ def form_predict():
         return render_template_string('''
             <h2>Resultado de la predicción</h2>
             <p>{{ resultado }} EUR</p>
-            <a href="/form_predict">Volver</a>
+            <a href="/api/v1/predict">Volver</a>
         ''', resultado=resultado)
     
     return render_template_string('''
@@ -64,42 +72,6 @@ def form_predict():
             <input type="submit" value="Predecir">
         </form>
     ''', options=options)
-
-# Carga el modelo
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
-
-
-@app.route("/", methods=["GET"])
-def hello():
-    return welcome_message()
-
-
-@app.route("/api/v1/predict", methods=["GET"])
-def predict():
-  
-#   Columnas del fichero usado para entrenar el modelo: 
-#   Tipus_de_contracte | CPV_def | Duracion_total
-    
-#   Recibimos los parámetros de la petición GET    
-    valores = {}
-
-    # valores['Tipus_de_contracte'] = request.args.get('Tipo', np.nan, type=float)
-    # valores['CPV_def'] = request.args.get('CPV', np.nan, type=float)
-    # valores['Duracion_total'] = request.args.get('Dur', np.nan, type=float)
-    
-    valores['Tipus_de_contracte'] = st.radio("Tipo de contrato",["1: Servicios","2: Suministros","3: Obras","4: Privado de administración pública","5: Gestión de servicio público","6: Concesión de servicios"],index = None,)
-    st.write("Has seleccionado:", valores['Tipus_de_contracte'])
-
-    valores['Duracion_total'] = st.slider("Duracion del contrato", min_value = 0.0, max_value = 1095.0, step = 0.1)
-
-    valores['CPV_def'] = st.text_input("Código CPV (deben ser 8 digitos)", "03451300")
-    st.write("El codigo actual és:", valores['CPV_def'])
-
-    #response = prediccion(model, valores)
-    prediccion(model, valores)
-
-    #return jsonify(response)
     
 @app.route("/api/v2/predict", methods=["POST"])
 def predict_v2():
@@ -115,10 +87,9 @@ def predict_v2():
     valores['CPV_def'] = data.get('CPV', np.nan)
     valores['Duracion_total'] = data.get('Dur', np.nan)
 
-    #response = prediccion(model, valores)
-    prediccion(model, valores)
-
-    #return jsonify(response)
+    resultado = prediccion(model, valores)
+    
+    return jsonify({"resultado": resultado})
 
 @app.route("/Codigos_CPV", methods=["GET"])
 def view_csv():
@@ -152,30 +123,6 @@ def view_csv():
     except FileNotFoundError:
         return "CSV file not found.", 404
     
-@app.route("/api/v1/retrain", methods=["GET"])
-def retrain():
-    global model
-    if os.path.exists("data/Advertising_new.csv"):
-        data = pd.read_csv('data/Advertising_new.csv')
-        data.columns = [col.lower() for col in data.columns]
-
-        X = data.drop(columns=['sales'])
-        y = data['sales']
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
-
-        model.fit(X_train, y_train)
-        rmse = np.sqrt(mean_squared_error(y_test, model.predict(X_test)))
-        mape = mean_absolute_percentage_error(y_test, model.predict(X_test))
-        model.fit(X, y)
-
-        # with open('ad_model.pkl', 'wb') as f:
-        #     pickle.dump(model, f)
-
-        return f"Model retrained. New evaluation metric RMSE: {str(rmse)}, MAPE: {str(mape)}"
-    else:
-        return "<h2>New data for retrain NOT FOUND. Nothing done!</h2>"
-
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
