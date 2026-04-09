@@ -103,12 +103,12 @@ def prediccion(model, valores):
     input_data = pd.DataFrame(valores_log1, index=[0])
 
     prediction = model.predict(input_data)[0]
-    st.write("Predicción:", prediction)
+    #st.write("Predicción:", prediction)
 
     # response['Parámetros de entrada'] = valores
-    # response['Predicción'] = np.expm1(prediction[0])
+    response['Predicción'] = np.expm1(prediction[0])
 
     # if missing:
     #     response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
 
-    #return response
+    return response

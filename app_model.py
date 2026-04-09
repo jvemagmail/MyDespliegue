@@ -30,9 +30,9 @@ def form_predict():
     ]
     if request.method == "POST":
         valores = {}
-        valores['Tipus_de_contracte'] = request.form.get('Tipus_de_contracte')
+        valores['Tipus_de_contracte'] = int(request.form.get('Tipus_de_contracte'))
         valores['Duracion_total'] = int(request.form.get('Duracion_total', 0))
-        valores['CPV_def'] = request.form.get('CPV_def')
+        valores['CPV_def'] = int(request.form.get('CPV_def'))
         # Llama a la función de predicción (ajusta según tu función real)
         resultado = prediccion(model, valores)
         return render_template_string('''
@@ -40,9 +40,10 @@ def form_predict():
             <p>{{ resultado }}</p>
             <a href="/form_predict">Volver</a>
         ''', resultado=resultado)
+    
     return render_template_string('''
         <h2>Formulario de Predicción</h2>
-        <form method="post" action="/form_predict">
+        <form method="post">
             <label for="Tipus_de_contracte">Tipo de contrato:</label>
             <select name="Tipus_de_contracte" required>
                 {% for opt in options %}
