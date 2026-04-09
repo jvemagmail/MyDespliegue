@@ -79,30 +79,33 @@ def prediccion(model, valores):
     response = {}
 
 #   Aplicamos logaritmo a las variables numéricas para que el modelo pueda hacer la predicción correctamente
-    valores_log1 = {key: np.log1p(val) for key, val in valores.items()}
+    # valores_log1 = {key: np.log1p(val) for key, val in valores.items()}
 
-    missing = [name for name, val in valores.items() if np.isnan(val)]
+    # missing = [name for name, val in valores.items() if np.isnan(val)]
 
-    input_data = pd.DataFrame(valores_log1, index=[0])
+    # input_data = pd.DataFrame(valores_log1, index=[0])
     
-    prediction = model.predict(input_data)
+    # prediction = model.predict(input_data)
 
-    val1 = st.radio("Tipo de contrato",["1: Servicios","2: Suministros","3: Obras","4: Privado de administración pública","5: Gestión de servicio público","6: Concesión de servicios"],index = None,)
-    st.write("Has seleccionado:", val1)
+    # val1 = st.radio("Tipo de contrato",["1: Servicios","2: Suministros","3: Obras","4: Privado de administración pública","5: Gestión de servicio público","6: Concesión de servicios"],index = None,)
+    # st.write("Has seleccionado:", val1)
 
-    val2 = st.slider("Duracion del contrato", min_value = 0.0, max_value = 1095.0, step = 0.1)
+    # val2 = st.slider("Duracion del contrato", min_value = 0.0, max_value = 1095.0, step = 0.1)
 
-    val3 = st.text_input("Código CPV (deben ser 8 digitos)", "03451300")
-    st.write("El codigo actual és:", val3)
+    # val3 = st.text_input("Código CPV (deben ser 8 digitos)", "03451300")
+    # st.write("El codigo actual és:", val3)
 
-    if st.button("Predict"):
-        prediction = str(model.predict([[val1, val2, val3]])[0])
-        st.write("Predicción:", prediction)
+    #if st.button("Predict"):
+    valores_log1 = {key: np.log1p(val) for key, val in valores.items()}
+    input_data = pd.DataFrame(valores_log1, index=[0])
+
+    prediction = model.predict(input_data)[0]
+    st.write("Predicción:", prediction)
 
     # response['Parámetros de entrada'] = valores
     # response['Predicción'] = np.expm1(prediction[0])
 
-    if missing:
-        response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
+    # if missing:
+    #     response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
 
     #return response

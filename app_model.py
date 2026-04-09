@@ -34,10 +34,18 @@ def predict():
 #   Recibimos los parámetros de la petición GET    
     valores = {}
 
-    valores['Tipus_de_contracte'] = request.args.get('Tipo', np.nan, type=float)
-    valores['CPV_def'] = request.args.get('CPV', np.nan, type=float)
-    valores['Duracion_total'] = request.args.get('Dur', np.nan, type=float)
+    # valores['Tipus_de_contracte'] = request.args.get('Tipo', np.nan, type=float)
+    # valores['CPV_def'] = request.args.get('CPV', np.nan, type=float)
+    # valores['Duracion_total'] = request.args.get('Dur', np.nan, type=float)
     
+    valores['Tipus_de_contracte'] = st.radio("Tipo de contrato",["1: Servicios","2: Suministros","3: Obras","4: Privado de administración pública","5: Gestión de servicio público","6: Concesión de servicios"],index = None,)
+    st.write("Has seleccionado:", valores['Tipus_de_contracte'])
+
+    valores['Duracion_total'] = st.slider("Duracion del contrato", min_value = 0.0, max_value = 1095.0, step = 0.1)
+
+    valores['CPV_def'] = st.text_input("Código CPV (deben ser 8 digitos)", "03451300")
+    st.write("El codigo actual és:", valores['CPV_def'])
+
     #response = prediccion(model, valores)
     prediccion(model, valores)
 
