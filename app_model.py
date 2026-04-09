@@ -38,9 +38,10 @@ def predict():
     valores['CPV_def'] = request.args.get('CPV', np.nan, type=float)
     valores['Duracion_total'] = request.args.get('Dur', np.nan, type=float)
     
-    response = prediccion(model, valores)
+    #response = prediccion(model, valores)
+    prediccion(model, valores)
 
-    return jsonify(response)
+    #return jsonify(response)
     
 @app.route("/api/v2/predict", methods=["POST"])
 def predict_v2():
@@ -56,9 +57,10 @@ def predict_v2():
     valores['CPV_def'] = data.get('CPV', np.nan)
     valores['Duracion_total'] = data.get('Dur', np.nan)
 
-    response = prediccion(model, valores)
+    #response = prediccion(model, valores)
+    prediccion(model, valores)
 
-    return jsonify(response)
+    #return jsonify(response)
 
 @app.route("/Codigos_CPV", methods=["GET"])
 def view_csv():

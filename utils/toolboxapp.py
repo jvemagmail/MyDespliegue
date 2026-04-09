@@ -105,4 +105,4 @@ def prediccion(model, valores):
     if missing:
         response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
 
-    return response
+    #return response
