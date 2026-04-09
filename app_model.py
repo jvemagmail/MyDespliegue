@@ -52,7 +52,7 @@ def form_predict():
         resultado = prediccion(model, valores)
         return render_template_string('''
             <h2>Resultado de la predicción</h2>
-            <p>{{ resultado }} EUR</p>
+            <p>{{ '{:.2f}'.format(resultado) }} EUR</p>
             <a href="/api/v1/predict">Volver</a>
         ''', resultado=resultado)
     

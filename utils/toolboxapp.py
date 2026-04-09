@@ -37,6 +37,7 @@ def welcome_message():
                             <li>6: Concesión de servicios</li>
                         </ul>
                     </li>
+                    <li><strong>Duración del contrato:</strong> Número de días que dura el contrato.</li>
                 </ul>
 
                 <h2>Predicciones:</h2>
@@ -44,17 +45,7 @@ def welcome_message():
                     <li>Para realizar una predicción, pulse el siguiente enlace:</li>
                     <a href=\"https://mydespliegue.onrender.com/api/v1/predict\" target=\"_blank\">
                         https://mydespliegue.onrender.com/api/v1/predict </a> 
-
-                    <a href=\"https://mydespliegue.onrender.com/form_predict\" target=\"_blank\">
-                        https://mydespliegue.onrender.com/form_predict </a> 
-
-                        <p>
-                        Añada los parámetros en la URL, por ejemplo:
-                        <a href=\"https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12\" target=\"_blank\">
-                        https://mydespliegue.onrender.com/api/v1/predict?Tipo=1&CPV=33696500&Dur=12</a>
-                        </p>
-
-                                
+                               
                     
                     <li>Para probar la predicción con Postman, puedes usar la siguiente configuración:</li>
                     <p> <strong>POST</strong> a <code>https://mydespliegue.onrender.com/api/v2/predict</code> <br>
