@@ -29,7 +29,7 @@ def form_predict():
         "6: Concesión de servicios"
     ]
     if request.method == "POST":
-        
+
         valores = {}
 
         valores['Tipus_de_contracte'] = request.form.get('Tipus_de_contracte')
@@ -44,7 +44,7 @@ def form_predict():
         resultado = prediccion(model, valores)
         return render_template_string('''
             <h2>Resultado de la predicción</h2>
-            <p>{{ resultado }}</p>
+            <p>{{ resultado }} EUR</p>
             <a href="/form_predict">Volver</a>
         ''', resultado=resultado)
     

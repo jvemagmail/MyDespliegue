@@ -106,9 +106,9 @@ def prediccion(model, valores):
     #st.write("Predicción:", prediction)
 
     # response['Parámetros de entrada'] = valores
-    response['Predicción'] = np.expm1(prediction)
+    prediction = np.expm1(prediction)
 
     # if missing:
     #     response['warning'] = f"Missing values imputed for: {', '.join(missing)}"
 
-    return response
+    return prediction
