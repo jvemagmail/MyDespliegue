@@ -29,15 +29,17 @@ def form_predict():
         "6: Concesión de servicios"
     ]
     if request.method == "POST":
+        
         valores = {}
 
         valores['Tipus_de_contracte'] = request.form.get('Tipus_de_contracte')
         numero, texto = valores['Tipus_de_contracte'].split(":", 1)
         numero = numero.strip()
-        valores['Tipus_de_contracte'] = int(numero)
-
-        valores['Duracion_total'] = int(request.form.get('Duracion_total', 0))
+        valores['Tipus_de_contracte'] = int(numero)       
+        
         valores['CPV_def'] = int(request.form.get('CPV_def'))
+        valores['Duracion_total'] = int(request.form.get('Duracion_total', 0))
+
         # Llama a la función de predicción (ajusta según tu función real)
         resultado = prediccion(model, valores)
         return render_template_string('''
